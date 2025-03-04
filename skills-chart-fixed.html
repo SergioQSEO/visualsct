@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Tech Skills in Demand</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Set brand colors */
+        :root {
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-gold: #F9C646;
+            --color-teal: #62D0BB;
+            --color-gray: #D5D5D5;
+        }
+        
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-white);
+            color: var(--color-black);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Chart container */
+        .chart-wrapper {
+            width: 100%;
+            padding: 20px 10px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        
+        /* Text styles */
+        .chart-title {
+            color: var(--color-black);
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .chart-description {
+            color: var(--color-black);
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+            
+            .chart-title {
+                font-size: 18px;
+            }
+            
+            .chart-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-wrapper">
+        <h2 class="chart-title">Top Tech Skills in Demand</h2>
+        <p class="chart-description">Key skills employers are seeking in tech professionals.</p>
+        <div class="chart-container">
+            <canvas id="skillsChart" aria-label="Chart showing top tech skills in demand" role="img"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define brand colors
+            const brandColors = {
+                black: "#000000",
+                white: "#FFFFFF",
+                gold: "#F9C646",
+                teal: "#62D0BB",
+                gray: "#D5D5D5"
+            };
+            
+            // Skills Data
+            const skillsData = [
+                { skill: "AI & Machine Learning", demandScore: 95 },
+                { skill: "Cybersecurity", demandScore: 94 },
+                { skill: "Cloud Computing", demandScore: 92 },
+                { skill: "DevOps", demandScore: 90 },
+                { skill: "Full-Stack Development", demandScore: 88 },
+                { skill: "Blockchain", demandScore: 85 },
+                { skill: "Mobile Development", demandScore: 82 }
+            ];
+
+            // Get chart context
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            
+            // Create the chart
+            new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: skillsData.map(item => item.skill),
+                    datasets: [{
+                        data: skillsData.map(item => item.demandScore),
+                        backgroundColor: [
+                            brandColors.gold,
+                            'rgba(249, 198, 70, 0.9)',
+                            'rgba(249, 198, 70, 0.8)',
+                            brandColors.teal,
+                            'rgba(98, 208, 187, 0.9)',
+                            'rgba(98, 208, 187, 0.8)',
+                            'rgba(98, 208, 187, 0.7)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    family: "'Montserrat', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += 'Demand Score: ' + context.parsed.r + '/100';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            display: true,
+                            angleLines: {
+                                display: true,
+                                color: brandColors.gray
+                            },
+                            grid: {
+                                color: brandColors.gray
+                            },
+                            suggestedMin: 80,
+                            suggestedMax: 100,
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

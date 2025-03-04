@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most In-Demand Programming Languages (2025)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Set brand colors */
+        :root {
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-gold: #F9C646;
+            --color-teal: #62D0BB;
+            --color-gray: #D5D5D5;
+        }
+        
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-white);
+            color: var(--color-black);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Chart container */
+        .chart-wrapper {
+            width: 100%;
+            padding: 20px 10px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        
+        /* Text styles */
+        .chart-title {
+            color: var(--color-black);
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .chart-description {
+            color: var(--color-black);
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+            
+            .chart-title {
+                font-size: 18px;
+            }
+            
+            .chart-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-wrapper">
+        <h2 class="chart-title">Most In-Demand Programming Languages (2025)</h2>
+        <p class="chart-description">Languages ranked by industry demand and salary potential.</p>
+        <div class="chart-container">
+            <canvas id="languageChart" aria-label="Chart showing demand for programming languages" role="img"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define brand colors
+            const brandColors = {
+                black: "#000000",
+                white: "#FFFFFF",
+                gold: "#F9C646",
+                teal: "#62D0BB",
+                gray: "#D5D5D5"
+            };
+            
+            // Language Data
+            const languageData = [
+                { language: "Python", demandScore: 95, salaryRank: 2 },
+                { language: "JavaScript", demandScore: 92, salaryRank: 4 },
+                { language: "Java", demandScore: 85, salaryRank: 3 },
+                { language: "C#", demandScore: 75, salaryRank: 5 },
+                { language: "Go", demandScore: 70, salaryRank: 7 },
+                { language: "Scala", demandScore: 65, salaryRank: 1 },
+                { language: "Rust", demandScore: 60, salaryRank: 6 },
+                { language: "Solidity", demandScore: 50, salaryRank: 8 }
+            ];
+
+            // Get chart context
+            const ctx = document.getElementById('languageChart').getContext('2d');
+            
+            // Create the chart
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: languageData.map(item => item.language),
+                    datasets: [
+                        {
+                            label: 'Industry Demand',
+                            data: languageData.map(item => item.demandScore),
+                            backgroundColor: 'rgba(249, 198, 70, 0.5)',
+                            borderColor: brandColors.gold,
+                            borderWidth: 2,
+                            pointBackgroundColor: brandColors.gold,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Salary Potential',
+                            data: languageData.map(item => (10 - item.salaryRank) * 10), // Convert rank to score
+                            backgroundColor: 'rgba(98, 208, 187, 0.5)',
+                            borderColor: brandColors.teal,
+                            borderWidth: 2,
+                            pointBackgroundColor: brandColors.teal,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Montserrat', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.r !== null) {
+                                        label += context.parsed.r + '/100';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: brandColors.gray
+                            },
+                            grid: {
+                                color: brandColors.gray
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 20,
+                                backdropColor: 'transparent'
+                            },
+                            pointLabels: {
+                                font: {
+                                    family: "'Montserrat', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Coding Jobs by Average Salary (2025)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Set brand colors */
+        :root {
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-gold: #F9C646;
+            --color-teal: #62D0BB;
+            --color-gray: #D5D5D5;
+        }
+        
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-white);
+            color: var(--color-black);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Chart container */
+        .chart-wrapper {
+            width: 100%;
+            padding: 20px 10px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        
+        /* Text styles */
+        .chart-title {
+            color: var(--color-black);
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .chart-description {
+            color: var(--color-black);
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+            
+            .chart-title {
+                font-size: 18px;
+            }
+            
+            .chart-description {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-wrapper">
+        <h2 class="chart-title">Top Coding Jobs by Average Salary (2025)</h2>
+        <p class="chart-description">Explore the highest-paying coding roles and their salary ranges. Hover over bars for more details.</p>
+        <div class="chart-container">
+            <canvas id="salaryChart" aria-label="Chart showing average salaries for top coding jobs" role="img"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define brand colors
+            const brandColors = {
+                black: "#000000",
+                white: "#FFFFFF",
+                gold: "#F9C646",
+                teal: "#62D0BB",
+                gray: "#D5D5D5"
+            };
+            
+            // Salary Data
+            const salaryData = [
+                { job: "AI Engineer", minSalary: 150000, maxSalary: 211000, avgSalary: 180500 },
+                { job: "Software Architect", minSalary: 120000, maxSalary: 170000, avgSalary: 145000 },
+                { job: "Blockchain Developer", minSalary: 100000, maxSalary: 166000, avgSalary: 133000 },
+                { job: "DevOps Engineer", minSalary: 95000, maxSalary: 140000, avgSalary: 126179 },
+                { job: "Data Scientist", minSalary: 100000, maxSalary: 150000, avgSalary: 125000 },
+                { job: "Machine Learning Engineer", minSalary: 110000, maxSalary: 160000, avgSalary: 123385 },
+                { job: "Cybersecurity Engineer", minSalary: 95000, maxSalary: 145000, avgSalary: 120000 },
+                { job: "Mobile App Developer", minSalary: 90000, maxSalary: 130370, avgSalary: 110185 },
+                { job: "Full-Stack Developer", minSalary: 85000, maxSalary: 135000, avgSalary: 110000 }
+            ];
+
+            // Custom tooltip formatter to add $ and commas to salary numbers
+            const formatCurrency = (value) => {
+                return '$' + value.toLocaleString();
+            };
+
+            // Get chart context
+            const ctx = document.getElementById('salaryChart').getContext('2d');
+            
+            // Create the chart
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: salaryData.map(item => item.job),
+                    datasets: [
+                        {
+                            label: 'Minimum Salary',
+                            data: salaryData.map(item => item.minSalary),
+                            backgroundColor: brandColors.teal,
+                            borderWidth: 0
+                        },
+                        {
+                            label: 'Average Salary',
+                            data: salaryData.map(item => item.avgSalary),
+                            backgroundColor: brandColors.gold,
+                            borderWidth: 0
+                        },
+                        {
+                            label: 'Maximum Salary',
+                            data: salaryData.map(item => item.maxSalary),
+                            backgroundColor: 'rgba(249, 198, 70, 0.5)',
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += formatCurrency(context.parsed.x);
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Montserrat', sans-serif",
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: brandColors.gray
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value / 1000 + 'k';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Annual Salary (USD)'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
